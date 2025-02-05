@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\DetalleBitácora;
-use App\Models\Vehículo;
+use App\Models\DetalleBitacora;
+use App\Models\Vehiculo;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +20,7 @@ Artisan::command('db:tables', function () {
 
 // Comando para ver los vehículos listados en una tabla
 Artisan::command('vehículos', function () {
-    $vehicles = Vehículo::all();
+    $vehicles = Vehiculo::all();
     $headers = ['id', 'placa', 'kilometraje', 'combustible'];
     $this->table($headers, $vehicles);
 });

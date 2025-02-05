@@ -7,7 +7,7 @@ use App\Models\TipoVehículo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Nette\Utils\Random;
 
-class VehículoFactory extends Factory
+class VehiculoFactory extends Factory
 {
     public function definition(): array
     {

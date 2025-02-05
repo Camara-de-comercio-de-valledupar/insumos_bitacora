@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-final class Bitácora extends Model
+final class Bitacora extends Model
 {
 
     use HasFactory;
 
-    protected $table = 'bitácoras';
+    protected $table = 'bitacoras';
     public $timestamps = false;
     protected $fillable = [
         'mes',
@@ -19,9 +19,9 @@ final class Bitácora extends Model
         'vehiculo_id',
     ];
 
-    public function vehículo()
+    public function vehiculo()
     {
-        return $this->belongsTo(Vehículo::class);
+        return $this->belongsTo(Vehiculo::class, "vehiculo_id", "id");
     }
 
     public function getMes(): int
@@ -34,7 +34,7 @@ final class Bitácora extends Model
        return $this->anio;
     }
 
-    public function getVehículoId(): int
+    public function getVehiculoId(): int
     {
         return $this->vehiculo_id;
     }
@@ -49,14 +49,14 @@ final class Bitácora extends Model
         $this->anio= $anio;
     }
 
-    public function setVehículoId($vehículoId): void
+    public function setVehiculoId($vehiculoId): void
     {
-        $this->vehículo_id = $vehículoId;
+        $this->vehiculo_id = $vehiculoId;
     }
 
     public function detalles(): HasMany
     {
-        return $this->hasMany(DetalleBitácora::class);
+        return $this->hasMany(DetalleBitacora::class);
     }
 }
 

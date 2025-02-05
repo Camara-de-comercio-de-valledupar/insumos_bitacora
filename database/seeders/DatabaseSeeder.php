@@ -2,25 +2,26 @@
 
 namespace Database\Seeders;
 
-use App\Models\Bitácora;
-use App\Models\DetalleBitácora;
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Vehículo;
+use App\Models\Vehiculo;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void {
-        $vehículos = Vehículo::factory(2)->create();
-        $vehículos->each(function ($item){
-           $bitacora = Bitácora::factory()->create([
-                'vehículo_id' => $item->id,
-            ]);
-           DetalleBitácora::factory(3)->create([
-               'bitacora_id' => $bitacora->id,
-           ]);
-        });
-
+        Vehiculo::create([
+            'placa' => 'JSH74E',
+            'kilometraje' => '11000',
+            'estado_combustible' => 'Full',
+        ]);
+        Vehiculo::create([
+            'placa' => 'VAU577',
+            'kilometraje' => '20000',
+            'estado_combustible' => 'Full',
+        ]);
+        Vehiculo::create([
+            'placa' => 'BAQ380',
+            'kilometraje' => '31000',
+            'estado_combustible' => 'Full',
+        ]);
     }
 }

@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\Vehiculo;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
-class BitácoraFactory extends Factory
+class BitacoraFactory extends Factory
 {
     public function definition(): array
     {

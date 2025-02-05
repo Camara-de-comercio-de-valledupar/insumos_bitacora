@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
-use Database\Factories\DetalleBitácoraFactory;
+use Database\Factories\DetalleBitacoraFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-final class DetalleBitácora extends Model
+final class DetalleBitacora extends Model
 {
     use HasFactory;
 
-    protected $table = 'detalles_bitácoras';
+    protected $table = 'detalles_bitacoras';
     protected $fillable = [
-        'vehículo_id',
+        'vehiculo_id',
         'dia',
         'usuario',
         'observaciones',
@@ -27,18 +27,29 @@ final class DetalleBitácora extends Model
         'gasolina_galones_compradas',
         'gasolina_precio',
         'responsable',
-        'bitácora_id',
+        'bitacora_id',
     ];
 
 
-    public function getVehículoId(): int
+    public function vehiculo(): BelongsTo
     {
-        return $this->vehículo_id;
+       return $this->belongsTo(Vehiculo::class);
     }
 
-    public function setVehículoId(int $vehículoId): void
+    public function bitacora(): BelongsTo
     {
-        $this->vehículo_id = $vehículoId;
+        return $this->belongsTo(Bitacora::class);
+    }
+
+
+    public function getVehiculoId(): int
+    {
+        return $this->vehiculo_id;
+    }
+
+    public function setVehiculoId(int $vehiculoId): void
+    {
+        $this->vehiculo_id = $vehiculoId;
     }
 
     public function getDia(): string
@@ -56,8 +67,9 @@ final class DetalleBitácora extends Model
         return $this->usuario;
     }
 
-    public function setUsuario(string $usuario): void
+    public function setUsuario(?string $usuario): void
     {
+        if(!$usuario) return;
         $this->usuario = $usuario;
     }
 
@@ -66,8 +78,9 @@ final class DetalleBitácora extends Model
         return $this->observaciones;
     }
 
-    public function setObservaciones(string $observaciones): void
+    public function setObservaciones(?string $observaciones): void
     {
+        if(!$observaciones) return;
         $this->observaciones = $observaciones;
     }
 
@@ -91,12 +104,12 @@ final class DetalleBitácora extends Model
         $this->km_salida = $kmSalida;
     }
 
-    public function getTanqueSalida(): float
+    public function getTanqueSalida(): string
     {
         return $this->tanque_salida;
     }
 
-    public function setTanqueSalida(float $tanqueSalida): void
+    public function setTanqueSalida(string $tanqueSalida): void
     {
         $this->tanque_salida = $tanqueSalida;
     }
@@ -126,7 +139,7 @@ final class DetalleBitácora extends Model
         return $this->tanque_llegada;
     }
 
-    public function setTanqueLlegada(float $tanqueLlegada): void
+    public function setTanqueLlegada(string $tanqueLlegada): void
     {
         $this->tanque_llegada = $tanqueLlegada;
     }
@@ -161,23 +174,18 @@ final class DetalleBitácora extends Model
         $this->responsable = $responsable;
     }
 
-    public function getBitácoraId(): int
+    public function getBitacoraId(): int
     {
-        return $this->bitácora_id;
+        return $this->bitacora_id;
     }
 
-    public function setBitácoraId(int $bitácoraId): void
+    public function setBitacoraId(int $bitacoraId): void
     {
-        $this->bitácora_id = $bitácoraId;
-    }
-
-    public function bitácora(): BelongsTo
-    {
-       return $this->belongsTo(Bitácora::class);
+        $this->bitacora_id = $bitacoraId;
     }
 
     public static function newFactory(): Factory
     {
-        return DetalleBitácoraFactory::new();
+        return DetalleBitacoraFactory::new();
     }
 }

@@ -7,7 +7,7 @@ use App\Models\Vehiculo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Nette\Utils\Random;
 
-class DetalleBitácoraFactory extends Factory
+class DetalleBitacoraFactory extends Factory
 {
     public function definition(): array
     {

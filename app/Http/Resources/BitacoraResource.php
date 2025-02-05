@@ -6,7 +6,7 @@ use App\Models\Bitacora;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BitácoraResource extends JsonResource
+class BitacoraResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,7 +18,8 @@ class BitácoraResource extends JsonResource
         return [
             'mes' => $this->getMes(),
             'anio' => $this->getAnio(),
-            'vehículo' => $this->vehículo(),
+            'vehiculo' => $this->vehiculo,
+            'detalles' => $this->detalles,
         ];
     }
 }

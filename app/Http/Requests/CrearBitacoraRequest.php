@@ -2,12 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Bitácora;
-use App\Models\DetalleBitácora;
+use App\Models\Bitacora;
+use App\Models\DetalleBitacora;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CrearBitácoraRequest extends FormRequest
+class CrearBitacoraRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -16,7 +16,7 @@ class CrearBitácoraRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'vehiculo_id' => 'required|integer|exists:App\Models\Vehículo,id',
+            'vehiculo_id' => 'required|integer|exists:App\Models\Vehiculo,id',
             'dia' => 'required|integer',
             'usuario' => 'nullable|string|max:255',
             'observaciones'=> 'nullable|string|max:255',
@@ -54,7 +54,7 @@ class CrearBitácoraRequest extends FormRequest
        ];
     }
 
-    public function getVehículoId(): int
+    public function getVehiculoId(): int
     {
         return $this->input('vehiculo_id');
     }
@@ -84,7 +84,7 @@ class CrearBitácoraRequest extends FormRequest
         return $this->input('km_salida');
     }
 
-    public function getTanqueSalida(): int
+    public function getTanqueSalida(): string
     {
         return $this->input('tanque_salida');
     }
@@ -99,7 +99,7 @@ class CrearBitácoraRequest extends FormRequest
         return $this->input('km_llegada');
     }
 
-    public function getTanqueLlegada(): int
+    public function getTanqueLlegada(): string
     {
         return $this->input('tanque_llegada');
     }
@@ -119,17 +119,17 @@ class CrearBitácoraRequest extends FormRequest
         return $this->input('responsable');
     }
 
-    public function crearBitácora(): Bitácora
+    public function crearBitacora(): Bitacora
     {
-        $bitácora=$this->buscarBitácoraActual($this->getVehículoId());
-        $detalle = $this->crearDetalleBitácora();
-        $bitácora->detalles()->save($detalle);
-        return $bitácora;
+        $bitacora=$this->buscarBitacoraActual($this->getVehiculoId());
+        $detalle = $this->crearDetalleBitacora();
+        $bitacora->detalles()->save($detalle);
+        return $bitacora;
     }
 
-    private function crearDetalleBitácora(): DetalleBitácora
+    private function crearDetalleBitacora(): DetalleBitacora
     {
-       $detalle = new DetalleBitácora();
+       $detalle = new DetalleBitacora();
        $detalle->setDia($this->getDia());
        $detalle->setUsuario($this->getUsuario());
        $detalle->setObservaciones($this->getObservaciones());
@@ -146,27 +146,27 @@ class CrearBitácoraRequest extends FormRequest
     }
 
 
-    private function buscarBitácoraActual($vehiculoId): Bitácora
+    private function buscarBitacoraActual($vehiculoId): Bitacora
     {
-        $bitácora = Bitácora::query()
+        $bitacora = Bitacora::query()
             ->firstWhere(
                 'vehiculo_id',
                 '=',
                 $vehiculoId
             );
 
-        if(!$bitácora) $bitácora = new Bitácora();
+        if(!$bitacora) $bitacora = new Bitacora();
 
 
             $mesActual = Carbon::now()->month;
             $anioActual = Carbon::now()->year;
-            $bitácora->setMes($mesActual);
-            $bitácora->setAnio($anioActual);
-            $bitácora->setVehículoId($vehiculoId);
-            $bitácora->save();
+            $bitacora->setMes($mesActual);
+            $bitacora->setAnio($anioActual);
+            $bitacora->setVehiculoId($vehiculoId);
+            $bitacora->save();
 
 
-            return $bitácora;
+            return $bitacora;
 
     }
 }

@@ -5,42 +5,48 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ActualizarBitacoraRequest;
 use App\Http\Requests\CrearBitacoraRequest;
 use App\Http\Requests\CrearDetalleBitacoraRequest;
-use App\Http\Resources\BitácoraResource;
-use App\Http\Resources\DetalleBitácoraResource;
+use App\Http\Resources\BitacoraCollection;
+use App\Http\Resources\BitacoraResource;
+use App\Http\Resources\DetalleBitacoraResource;
 use App\Models\Bitacora;
 use App\Models\DetalleBitacora;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class BitácoraController extends Controller
+class BitacoraController extends Controller
 {
-    public function guardarBitácora(CrearBitacoraRequest $request): BitácoraResource
+
+    public function listarBitacoras(): BitacoraCollection
     {
-        $bitácora = $request->crearBitácora();
-        return new BitácoraResource($bitácora);
+        return new BitacoraCollection(Bitacora::all());
+    }
+    public function guardarBitacora(CrearBitacoraRequest $request): BitacoraResource
+    {
+        $bitacora = $request->crearBitacora();
+        return new BitacoraResource($bitacora);
     }
 
-    public function agregarDetalleBitácora(CrearDetalleBitacoraRequest $request): DetalleBitácoraResource
+    public function agregarDetalleBitacora(CrearDetalleBitacoraRequest $request): DetalleBitacoraResource
     {
-        $detalleBitácora = $request->crearDetalleBitácora();
-        return new DetalleBitácoraResource($detalleBitácora);
+        $detalleBitacora = $request->crearDetalleBitacora();
+        return new DetalleBitacoraResource($detalleBitacora);
     }
 
-    public function actualizarBitácora(ActualizarBitacoraRequest $request, Bitacora $bitácora): BitácoraResource
+    public function actualizarBitacora(ActualizarBitacoraRequest $request, Bitacora $bitacora): BitacoraResource
     {
-        $bitácora = $request->actualizarBitácora($bitácora);
-        return new BitácoraResource($bitácora);
+        $bitacora = $request->actualizarBitacora($bitacora);
+        return new BitacoraResource($bitacora);
     }
 
-    public function eliminarBitácora(Request $request, Bitacora $bitácora): JsonResponse
+    public function eliminarBitacora(Request $request, Bitacora $bitacora): JsonResponse
     {
-        $bitácora->delete();
+        $bitacora->delete();
         return response()->json(null, 204);
     }
 
-    public function eliminarDetalleBitácora(Request $request, DetalleBitacora $detalleBitácora): JsonResponse
+    public function eliminarDetalleBitacora(Request $request, DetalleBitacora $detalleBitacora): JsonResponse
     {
-        $detalleBitácora->delete();
+        $detalleBitacora->delete();
         return response()->json(null, 204);
     }
 }

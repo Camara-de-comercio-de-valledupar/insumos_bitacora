@@ -1,19 +1,27 @@
 <?php
 
-use App\Http\Controllers\BitácoraController;
+use App\Http\Controllers\{
+    BitacoraController,
+    DetalleVehiculoController,
+    UltimoConductorController
+};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return response()->json(['message' => 'Bitácora de vehículos de la Cámara de Comercio de Valledupar']);
+    return response()->json(['message' => 'Bitacora de vehiculos de la Camara de Comercio de Valledupar']);
 });
 
 
 Route::prefix(
-    'bitácoras',
+    'bitacoras',
 )->group(function () {
-    Route::post('crear-bitácora', [BitácoraController::class, 'guardarBitácora'])->name('bitácora-guardar');
-    Route::post('agregar-detalle-bitácora', [BitácoraController::class, 'agregarDetalleBitácora'])->name('agregar-detalle-bitácora');
-    Route::put('actualizar-bitácora/{bitácora}', [BitácoraController::class, 'actualizarBitácora'])->name('actualizar-bitácora');
-    Route::delete('eliminar-bitácora/{bitácora}', [BitácoraController::class, 'eliminarBitácora'])->name('eliminar-bitácora');
-    Route::delete('eliminar-detalle-bitácora/{detalleBitácora}', [BitácoraController::class, 'eliminarDetalleBitácora'])->name('eliminar-detalle-bitácora');
+    Route::get('/', [BitacoraController::class, 'listarBitacoras']);
+    Route::post('/', [BitacoraController::class, 'guardarBitacora'])->name('bitacora-guardar');
+    Route::put('/{bitacora}', [BitacoraController::class, 'actualizarBitacora'])->name('actualizar-bitacora');
+    Route::delete('/{bitacora}', [BitacoraController::class, 'eliminarBitacora'])->name('eliminar-bitacora');
+    Route::post('/agregar-detalle-bitacora', [BitacoraController::class, 'agregarDetalleBitacora'])->name('agregar-detalle-bitacora');
+    Route::delete('eliminar-detalle-bitacora/{detalleBitacora}', [BitacoraController::class, 'eliminarDetalleBitacora'])->name('eliminar-detalle-bitacora');
 });
+
+Route::get('/vehiculo/{placa:string}', DetalleVehiculoController::class);
+Route::get('/vehiculo/{placa:string}/ultimo-conductor', UltimoConductorController::class);

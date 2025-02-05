@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-use Database\Factories\VehículoFactory;
+use Database\Factories\VehiculoFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-final class Vehículo extends Model
+final class Vehiculo extends Model
 {
     use HasFactory;
 
-    public $table = "vehículos";
+    public $table = "vehiculos";
     public $timestamps = false;
 
     protected $fillable = [
@@ -53,6 +53,6 @@ final class Vehículo extends Model
 
     public static function newFactory(): Factory
     {
-        return VehículoFactory::new();
+        return VehiculoFactory::new();
     }
 }
