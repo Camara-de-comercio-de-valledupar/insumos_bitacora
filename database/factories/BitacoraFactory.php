@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Vehículo;
+use App\Models\Vehiculo;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 class BitácoraFactory extends Factory
@@ -14,7 +14,7 @@ class BitácoraFactory extends Factory
         return [
             'mes' => $mes,
             'anio' => $year,
-            'vehículo_id' => Vehículo::factory(),
+            'vehículo_id' => Vehiculo::factory(),
         ];
     }
 }

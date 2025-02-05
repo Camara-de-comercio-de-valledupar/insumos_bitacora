@@ -16,7 +16,7 @@ final class Bitácora extends Model
     protected $fillable = [
         'mes',
         'anio',
-        'vehículo_id',
+        'vehiculo_id',
     ];
 
     public function vehículo()

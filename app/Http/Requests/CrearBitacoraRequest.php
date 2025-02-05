@@ -16,25 +16,47 @@ class CrearBitácoraRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'vehículo_id' => 'required|integer|exists:App\Models\Vehículo',
+            'vehiculo_id' => 'required|integer|exists:App\Models\Vehículo,id',
             'dia' => 'required|integer',
             'usuario' => 'nullable|string|max:255',
             'observaciones'=> 'nullable|string|max:255',
             'hora_salida' => 'required|date_format:H:i',
             'km_salida' => 'required|integer',
-            'tanque_salida' => 'required|integer',
+            'tanque_salida' => 'required|string',
             'hora_llegada' => 'required|date_format:H:i',
             'km_llegada' => 'required|integer',
-            'tanque_llegada' => 'required|integer',
+            'tanque_llegada' => 'required|string',
             'gasolina_galones_compradas' => 'required|integer',
             'gasolina_precio' => 'required|integer',
             'responsable' => 'required|string|max:255',
         ];
     }
 
+    public function messages()
+    {
+       return [
+           'vehiculo_id.required' => 'El id del vehiculo es requerido.',
+           'vehiculo_id.integer' => 'El id del vehiculo debe ser un entero.',
+           'vehiculo_id.exists' => 'El id del vehiculo no existe.',
+           'dia.required' => 'El valor es requerido.',
+           'dia.integer' => 'El valor debe ser un entero.',
+           'usuario.string' => 'El usuario debe ser un texto.',
+           'usuario.max' => 'El usuario debe tener como maximo 255 caracteres.',
+           'observaciones.required' => 'La observaciones es requerido.',
+           'observaciones.string' => 'La observaciones debe ser un texto.',
+           'observaciones.max' => 'La observaciones debe tener como maximo 255 caracteres.',
+           'hora_salida.required' => 'La hora de salida es requerido.',
+           'hora_salida.date_format' => 'La hora de salida debe tener formato de fecha.',
+           'km_salida.required' => 'La km_salida es requerido.',
+           'km_salida.integer' => 'La km_salida debe ser un entero.',
+           'tanque_salida.required' => 'La tanque_salida es requerido.',
+           'tanque_salida.'
+       ];
+    }
+
     public function getVehículoId(): int
     {
-        return $this->input('vehículo_id');
+        return $this->input('vehiculo_id');
     }
 
     public function getDia(): int
@@ -124,14 +146,14 @@ class CrearBitácoraRequest extends FormRequest
     }
 
 
-    private function buscarBitácoraActual($vehículoId): Bitácora
+    private function buscarBitácoraActual($vehiculoId): Bitácora
     {
         $bitácora = Bitácora::query()
-            ->firstWhere([
-                'vehículo_id',
+            ->firstWhere(
+                'vehiculo_id',
                 '=',
-                $vehículoId
-            ]);
+                $vehiculoId
+            );
 
         if(!$bitácora) $bitácora = new Bitácora();
 
@@ -140,7 +162,7 @@ class CrearBitácoraRequest extends FormRequest
             $anioActual = Carbon::now()->year;
             $bitácora->setMes($mesActual);
             $bitácora->setAnio($anioActual);
-            $bitácora->setVehículoId($vehículoId);
+            $bitácora->setVehículoId($vehiculoId);
             $bitácora->save();
 
 

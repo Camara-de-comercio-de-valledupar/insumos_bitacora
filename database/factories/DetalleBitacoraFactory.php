@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Bitácora;
-use App\Models\Vehículo;
+use App\Models\Bitacora;
+use App\Models\Vehiculo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Nette\Utils\Random;
 
@@ -25,7 +25,7 @@ class DetalleBitácoraFactory extends Factory
             'gasolina_galones_compradas' => Random::generate(5, '0-9'),
             'gasolina_precio' => Random::generate(5, '0-9'),
             'responsable' => fake()->name,
-            'bitácora_id' => Bitácora::factory(),
+            'bitácora_id' => Bitacora::factory(),
         ];
     }
 }

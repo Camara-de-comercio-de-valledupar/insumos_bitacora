@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Bitácora;
+use App\Models\Bitacora;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
