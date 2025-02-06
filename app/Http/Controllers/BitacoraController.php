@@ -18,7 +18,7 @@ class BitacoraController extends Controller
 
     public function listarBitacoras(): BitacoraCollection
     {
-        return new BitacoraCollection(Bitacora::all());
+        return new BitacoraCollection(Bitacora::query()->orderBy("mes", "DESC")->orderBy("anio", "DESC")->get());
     }
     public function guardarBitacora(CrearBitacoraRequest $request): BitacoraResource
     {

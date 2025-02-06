@@ -19,7 +19,7 @@ class BitacoraResource extends JsonResource
             'mes' => $this->getMes(),
             'anio' => $this->getAnio(),
             'vehiculo' => $this->vehiculo,
-            'detalles' => $this->detalles,
+            'detalles' => $this->detalles()->latest()->get(),
         ];
     }
 }

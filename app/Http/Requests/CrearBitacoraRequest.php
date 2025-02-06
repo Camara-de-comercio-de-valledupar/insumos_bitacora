@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Bitacora;
 use App\Models\DetalleBitacora;
+use App\Models\Vehiculo;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -16,7 +17,7 @@ class CrearBitacoraRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'vehiculo_id' => 'required|integer|exists:App\Models\Vehiculo,id',
+            'vehiculo_placa' => 'required|string|exists:App\Models\Vehiculo,placa',
             'dia' => 'required|integer',
             'usuario' => 'nullable|string|max:255',
             'observaciones'=> 'nullable|string|max:255',
@@ -35,9 +36,9 @@ class CrearBitacoraRequest extends FormRequest
     public function messages()
     {
        return [
-           'vehiculo_id.required' => 'El id del vehiculo es requerido.',
-           'vehiculo_id.integer' => 'El id del vehiculo debe ser un entero.',
-           'vehiculo_id.exists' => 'El id del vehiculo no existe.',
+           'vehiculo_placa.required' => 'La placa del vehiculo es requerido.',
+           'vehiculo_placa.string' => 'La placa del vehiculo debe ser un entero.',
+           'vehiculo_placa.exists' => 'La placa del vehiculo no existe.',
            'dia.required' => 'El valor es requerido.',
            'dia.integer' => 'El valor debe ser un entero.',
            'usuario.string' => 'El usuario debe ser un texto.',
@@ -50,13 +51,12 @@ class CrearBitacoraRequest extends FormRequest
            'km_salida.required' => 'La km_salida es requerido.',
            'km_salida.integer' => 'La km_salida debe ser un entero.',
            'tanque_salida.required' => 'La tanque_salida es requerido.',
-           'tanque_salida.'
        ];
     }
 
-    public function getVehiculoId(): int
+    public function getVehiculoPlaca(): string
     {
-        return $this->input('vehiculo_id');
+        return $this->input('vehiculo_placa');
     }
 
     public function getDia(): int
@@ -121,7 +121,7 @@ class CrearBitacoraRequest extends FormRequest
 
     public function crearBitacora(): Bitacora
     {
-        $bitacora=$this->buscarBitacoraActual($this->getVehiculoId());
+        $bitacora=$this->buscarBitacoraActual($this->getVehiculoPlaca());
         $detalle = $this->crearDetalleBitacora();
         $bitacora->detalles()->save($detalle);
         return $bitacora;
@@ -146,27 +146,25 @@ class CrearBitacoraRequest extends FormRequest
     }
 
 
-    private function buscarBitacoraActual($vehiculoId): Bitacora
+    private function buscarBitacoraActual(string $placa): Bitacora
     {
         $bitacora = Bitacora::query()
-            ->firstWhere(
-                'vehiculo_id',
-                '=',
-                $vehiculoId
-            );
+            ->whereHas("vehiculo", function ($query) use ($placa) {
+                $query->where('placa', $placa);
+            })->first();
 
         if(!$bitacora) $bitacora = new Bitacora();
+        $vehiculo = Vehiculo::query()
+            ->firstWhere('placa', $placa);
+        $mesActual = Carbon::now()->month;
+        $anioActual = Carbon::now()->year;
+        $bitacora->setMes($mesActual);
+        $bitacora->setAnio($anioActual);
+        $bitacora->setVehiculoId($vehiculo->id);
+        $bitacora->save();
 
 
-            $mesActual = Carbon::now()->month;
-            $anioActual = Carbon::now()->year;
-            $bitacora->setMes($mesActual);
-            $bitacora->setAnio($anioActual);
-            $bitacora->setVehiculoId($vehiculoId);
-            $bitacora->save();
-
-
-            return $bitacora;
+        return $bitacora;
 
     }
 }
