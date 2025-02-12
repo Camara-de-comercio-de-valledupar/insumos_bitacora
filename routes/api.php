@@ -4,7 +4,8 @@ use App\Http\Controllers\{
     BitacoraController,
     ConsultarVehiculosController,
     DetalleVehiculoController,
-    UltimoConductorController
+    UltimoConductorController,
+    VehiculoBitacoraController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -26,4 +27,5 @@ Route::prefix(
 
 Route::get('/vehiculos', ConsultarVehiculosController::class);
 Route::get('/vehiculo/{placa:string}', DetalleVehiculoController::class);
+Route::get('/vehiculo/{placa:string}/bitacora', VehiculoBitacoraController::class);
 Route::get('/vehiculo/{placa:string}/ultimo-conductor', UltimoConductorController::class);
