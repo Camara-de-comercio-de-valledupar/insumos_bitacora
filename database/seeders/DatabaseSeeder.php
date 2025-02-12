@@ -7,21 +7,39 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    public function run(): void {
+    public function run(): void
+    {
         Vehiculo::create([
-            'placa' => 'JSH74E',
-            'kilometraje' => '11000',
-            'estado_combustible' => 'Full',
+            "marca" => "Jeep",
+            "modelo" => "Cherokee",
+            'placa' => 'ZIF084',
+            "color" => "negro",
+            'kilometraje' => '322279',
+            'estado_combustible' => 'Vacio',
         ]);
         Vehiculo::create([
+            "marca" => "Ford",
+            "modelo" => "F150",
             'placa' => 'VAU577',
-            'kilometraje' => '20000',
+            "color" => "negro",
+            'kilometraje' => '327953',
             'estado_combustible' => 'Full',
         ]);
         Vehiculo::create([
-            'placa' => 'BAQ380',
-            'kilometraje' => '31000',
+            "marca" => "Toyota",
+            "modelo" => "Fortuner",
+            "color" => "blanco",
+            'placa' => 'VAQ380',
+            'kilometraje' => '240505',
             'estado_combustible' => 'Full',
+        ]);
+        Vehiculo::create([
+            "placa" => "JSH74E",
+            "marca" => "Yamaha",
+            "modelo" => "FZ",
+            "color" => "rojo vino tinto",
+            "kilometraje" => "0",
+            "estado_combustible" => "Vacio",
         ]);
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\{
     BitacoraController,
+    ConsultarVehiculosController,
     DetalleVehiculoController,
     UltimoConductorController
 };
@@ -23,5 +24,6 @@ Route::prefix(
     Route::delete('eliminar-detalle-bitacora/{detalleBitacora}', [BitacoraController::class, 'eliminarDetalleBitacora'])->name('eliminar-detalle-bitacora');
 });
 
+Route::get('/vehiculos', ConsultarVehiculosController::class);
 Route::get('/vehiculo/{placa:string}', DetalleVehiculoController::class);
 Route::get('/vehiculo/{placa:string}/ultimo-conductor', UltimoConductorController::class);

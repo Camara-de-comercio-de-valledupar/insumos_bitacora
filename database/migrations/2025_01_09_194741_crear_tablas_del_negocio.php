@@ -16,6 +16,9 @@ return new class extends Migration
         // Tabla de vehiculos
         Schema::create('vehiculos', function (Blueprint $table) {
             $table->id(); // Id del vehiculo
+            $table->string('marca', 100); // Marca del vehiculo
+            $table->string('modelo', 100); // Modelo del vehiculo
+            $table->string('color', 100); // Color del vehiculo
             $table->string('placa', 6)->unique(); // Placa del vehiculo
             $table->integer('kilometraje'); // Kilometraje del vehiculo
             $table->enum('estado_combustible', ["Full", "1/4", "1/2", "3/4", "Vacio"]);
