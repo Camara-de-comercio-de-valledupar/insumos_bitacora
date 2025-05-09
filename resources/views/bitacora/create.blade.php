@@ -42,9 +42,9 @@
                         <div class="form-group">
                             <label for="responsable">Responsable</label>
                             <input x-data="{ responsable: '' }" x-effect="responsable = localStorage.getItem('conductor')"
-                                x-model="responsable" type="text"
+                                x-model="responsable" x-bind:value="responsable" type="text"
                                 class="form-control {{ $errors->has('responsable') ? 'is-invalid' : '' }}"
-                                name="responsable" id="responsable" readonly disabled>
+                                name="responsable" id="responsable">
                             @error('responsable')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -95,6 +95,7 @@
                                     Seleccione una opción</option>
                                 <option value="Full" {{ old('tanque_salida') == 'Full' ? 'selected' : '' }}>Lleno
                                 </option>
+                                <option value="3/4" {{ old('tanque_salida') == '3/4' ? 'selected' : '' }}>3/4
                                 <option value="1/2" {{ old('tanque_salida') == '1/2' ? 'selected' : '' }}>1/2
                                 </option>
                                 <option value="1/4" {{ old('tanque_salida') == '1/4' ? 'selected' : '' }}>1/4

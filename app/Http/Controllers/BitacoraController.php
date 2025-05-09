@@ -17,11 +17,25 @@ use Illuminate\Http\Request;
 class BitacoraController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $vehiculo = Vehiculo::first();
-        $bitacoras = $vehiculo->bitacoras;
-        return view('bitacora.index', compact('bitacoras', 'vehiculo'));
+
+        $vehiculoId = $request->get('vehiculo_id');
+        if ($vehiculoId) {
+            // Guardar variable en session
+            session(['vehiculo_id' => $vehiculoId]);
+        } else {
+            $vehiculoId = session('vehiculo_id');
+        }
+        if ($vehiculoId) {
+            $vehiculo = Vehiculo::find($vehiculoId);
+            $bitacoras = $vehiculo->bitacoras()->get();
+        } else {
+            $vehiculo = null;
+            $bitacoras = Bitacora::all();
+        }
+        $vehiculos = Vehiculo::all();
+        return view('bitacora.index', compact('bitacoras', 'vehiculos', 'vehiculo'));
     }
 
     public function create(Bitacora $bitacora)
@@ -51,9 +65,23 @@ class BitacoraController extends Controller
         return redirect()->route('bitacora.show', $bitacora);
     }
 
-    public function destroy(Bitacora $bitacora)
+    public function destroy(Bitacora $bitacora, DetalleBitacora $detalleBitacora)
     {
-        $bitacora->delete();
+        $detalleBitacora->delete();
         return redirect()->route('bitacora.index');
+    }
+
+    public function createBitacora()
+    {
+        if (!session('vehiculo_id')) {
+            return redirect()->route('bitacora.index')->with('error', 'No se ha seleccionado un vehículo.');
+        }
+        $vehiculo = Vehiculo::find(session('vehiculo_id'));
+        $bitacora = Bitacora::create([
+            'vehiculo_id' => $vehiculo->id,
+            'mes' => date('m'),
+            'anio' => date('Y'),
+        ]);
+        return redirect()->route('bitacora.show', $bitacora);
     }
 }

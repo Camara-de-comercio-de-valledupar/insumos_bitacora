@@ -4,6 +4,7 @@ use App\Http\Controllers\BitacoraController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [BitacoraController::class, 'index'])->name('bitacora.index');
+Route::post('/crear-bitacora', [BitacoraController::class, 'createBitacora'])->name('bitacora.createBitacora');
 Route::get("/{bitacora}", [BitacoraController::class, 'show'])->name('bitacora.show');
 Route::get('/{bitacora}/crear', [BitacoraController::class, 'create'])->name('bitacora.create');
 Route::post('/{bitacora}/crear', [BitacoraController::class, 'store'])->name('bitacora.store');

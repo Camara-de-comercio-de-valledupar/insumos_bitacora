@@ -22,8 +22,29 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div class="container">
+
+    @session('error')
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endsession
+
+    <div class="container" style="margin-bottom: 100px;">
         {{ $slot }}
+    </div>
+    {{-- Barra inferior de navegación --}}
+    <div class="fixed-bottom d-md-none">
+        <nav class="navbar navbar-expand-lg navbar-light bg-primary text-white d-flex flex-row justify-content-around">
+            <div class="container-fluid justify-content-around">
+                <a class="navbar-brand d-flex flex-column align-items-center text-white"
+                    href="{{ route('bitacora.index') }}">
+                    <span class="material-icons" style="font-size: 2rem;">home</span>
+                    <span class="text-white text-sm">Princial</span>
+                </a>
+            </div>
+        </nav>
+
     </div>
 </body>
 
