@@ -14,6 +14,7 @@ final class Vehiculo extends Model
     public $table = "vehiculos";
     public $timestamps = false;
 
+
     protected $fillable = [
         "marca",
         "modelo",
@@ -23,6 +24,10 @@ final class Vehiculo extends Model
         'estado_combustible',
     ];
 
+    public function bitacoras()
+    {
+        return $this->hasMany(Bitacora::class, 'vehiculo_id');
+    }
     public function getMarca(): string
     {
         return $this->marca;

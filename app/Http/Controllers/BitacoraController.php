@@ -10,43 +10,50 @@ use App\Http\Resources\BitacoraResource;
 use App\Http\Resources\DetalleBitacoraResource;
 use App\Models\Bitacora;
 use App\Models\DetalleBitacora;
+use App\Models\Vehiculo;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class BitacoraController extends Controller
 {
 
-    public function listarBitacoras(): BitacoraCollection
+    public function index()
     {
-        return new BitacoraCollection(Bitacora::query()->orderBy("mes", "DESC")->orderBy("anio", "DESC")->get());
-    }
-    public function guardarBitacora(CrearBitacoraRequest $request): BitacoraResource
-    {
-        $bitacora = $request->crearBitacora();
-        return new BitacoraResource($bitacora);
+        $vehiculo = Vehiculo::first();
+        $bitacoras = $vehiculo->bitacoras;
+        return view('bitacora.index', compact('bitacoras', 'vehiculo'));
     }
 
-    public function agregarDetalleBitacora(CrearDetalleBitacoraRequest $request): DetalleBitacoraResource
+    public function create(Bitacora $bitacora)
     {
-        $detalleBitacora = $request->crearDetalleBitacora();
-        return new DetalleBitacoraResource($detalleBitacora);
+        return view('bitacora.create', compact('bitacora'));
     }
 
-    public function actualizarBitacora(ActualizarBitacoraRequest $request, Bitacora $bitacora): BitacoraResource
+    public function store(Bitacora $bitacora, CrearBitacoraRequest $request)
     {
-        $bitacora = $request->actualizarBitacora($bitacora);
-        return new BitacoraResource($bitacora);
+        $bitacora = $request->crearBitacora($bitacora);
+        return redirect()->route('bitacora.show', $bitacora);
     }
 
-    public function eliminarBitacora(Request $request, Bitacora $bitacora): JsonResponse
+    public function show(Bitacora $bitacora)
+    {
+        return view('bitacora.show', compact('bitacora'));
+    }
+
+    public function edit(Bitacora $bitacora, DetalleBitacora $detalleBitacora)
+    {
+        return view('bitacora.edit', compact('bitacora', 'detalleBitacora'));
+    }
+
+    public function update(Bitacora $bitacora, DetalleBitacora $detalleBitacora, ActualizarBitacoraRequest $request)
+    {
+        $bitacora = $request->actualizarBitacora($bitacora, $detalleBitacora);
+        return redirect()->route('bitacora.show', $bitacora);
+    }
+
+    public function destroy(Bitacora $bitacora)
     {
         $bitacora->delete();
-        return response()->json(null, 204);
-    }
-
-    public function eliminarDetalleBitacora(Request $request, DetalleBitacora $detalleBitacora): JsonResponse
-    {
-        $detalleBitacora->delete();
-        return response()->json(null, 204);
+        return redirect()->route('bitacora.index');
     }
 }

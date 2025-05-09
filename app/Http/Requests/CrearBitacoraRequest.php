@@ -17,10 +17,9 @@ class CrearBitacoraRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'vehiculo_placa' => 'required|string|exists:App\Models\Vehiculo,placa',
-            'dia' => 'required|integer',
-            'usuario' => 'nullable|string|max:255',
-            'observaciones'=> 'nullable|string|max:255',
+            'dia' => 'required|date_format:Y-m-d',
+            'usuario' => 'string|string|max:255',
+            'observaciones' => 'nullable|string|max:255',
             'hora_salida' => 'required|date_format:H:i',
             'km_salida' => 'required|integer',
             'tanque_salida' => 'required|string',
@@ -35,33 +34,40 @@ class CrearBitacoraRequest extends FormRequest
 
     public function messages()
     {
-       return [
-           'vehiculo_placa.required' => 'La placa del vehiculo es requerido.',
-           'vehiculo_placa.string' => 'La placa del vehiculo debe ser un entero.',
-           'vehiculo_placa.exists' => 'La placa del vehiculo no existe.',
-           'dia.required' => 'El valor es requerido.',
-           'dia.integer' => 'El valor debe ser un entero.',
-           'usuario.string' => 'El usuario debe ser un texto.',
-           'usuario.max' => 'El usuario debe tener como maximo 255 caracteres.',
-           'observaciones.required' => 'La observaciones es requerido.',
-           'observaciones.string' => 'La observaciones debe ser un texto.',
-           'observaciones.max' => 'La observaciones debe tener como maximo 255 caracteres.',
-           'hora_salida.required' => 'La hora de salida es requerido.',
-           'hora_salida.date_format' => 'La hora de salida debe tener formato de fecha.',
-           'km_salida.required' => 'La km_salida es requerido.',
-           'km_salida.integer' => 'La km_salida debe ser un entero.',
-           'tanque_salida.required' => 'La tanque_salida es requerido.',
-       ];
-    }
-
-    public function getVehiculoPlaca(): string
-    {
-        return $this->input('vehiculo_placa');
+        return [
+            'dia.required' => 'El valor es requerido.',
+            'dia.integer' => 'El valor debe ser un entero.',
+            'usuario.string' => 'El usuario debe ser un texto.',
+            'usuario.max' => 'El usuario debe tener como maximo 255 caracteres.',
+            'observaciones.required' => 'La observaciones es requerido.',
+            'observaciones.string' => 'La observaciones debe ser un texto.',
+            'observaciones.max' => 'La observaciones debe tener como maximo 255 caracteres.',
+            'hora_salida.required' => 'La hora de salida es requerido.',
+            'hora_salida.date_format' => 'La hora de salida debe tener formato de fecha.',
+            'km_salida.required' => 'Los kilometros de salida es requerido.',
+            'km_salida.integer' => 'Los kilometros de salida debe ser un entero.',
+            'tanque_salida.required' => 'El valor del tanque de salida es requerido.',
+            'tanque_salida.string' => 'El valor del tanque de salida debe ser un texto.',
+            'hora_llegada.required' => 'La hora de llegada es requerido.',
+            'hora_llegada.date_format' => 'La hora de llegada debe tener formato de fecha.',
+            'km_llegada.required' => 'Los kilometros de llegada es requerido.',
+            'km_llegada.integer' => 'Los kilometros de llegada debe ser un entero.',
+            'tanque_llegada.required' => 'El valor del tanque de llegada es requerido.',
+            'tanque_llegada.string' => 'El valor del tanque de llegada debe ser un texto.',
+            'gasolina_galones_compradas.required' => 'La gasolina comprada es requerida.',
+            'gasolina_galones_compradas.integer' => 'La gasolina comprada debe ser un entero.',
+            'gasolina_precio.required' => 'El precio de la gasolina es requerido.',
+            'gasolina_precio.integer' => 'El precio de la gasolina debe ser un entero.',
+            'responsable.required' => 'El responsable es requerido.',
+            'responsable.string' => 'El responsable debe ser un texto.',
+            'responsable.max' => 'El responsable debe tener como maximo 255 caracteres.',
+        ];
     }
 
     public function getDia(): int
     {
-        return $this->input('dia');
+        $dia = Carbon::parse($this->input('dia'));
+        return $dia->day;
     }
 
     public function getUsuario(): ?string
@@ -119,9 +125,8 @@ class CrearBitacoraRequest extends FormRequest
         return $this->input('responsable');
     }
 
-    public function crearBitacora(): Bitacora
+    public function crearBitacora(Bitacora $bitacora): Bitacora
     {
-        $bitacora=$this->buscarBitacoraActual($this->getVehiculoPlaca());
         $detalle = $this->crearDetalleBitacora();
         $bitacora->detalles()->save($detalle);
         return $bitacora;
@@ -129,42 +134,19 @@ class CrearBitacoraRequest extends FormRequest
 
     private function crearDetalleBitacora(): DetalleBitacora
     {
-       $detalle = new DetalleBitacora();
-       $detalle->setDia($this->getDia());
-       $detalle->setUsuario($this->getUsuario());
-       $detalle->setObservaciones($this->getObservaciones());
-       $detalle->setHoraSalida($this->getHoraSalida());
-       $detalle->setKmSalida($this->getKmSalida());
-       $detalle->setTanqueSalida($this->getTanqueSalida());
-       $detalle->setHoraLlegada($this->getHoraLlegada());
-       $detalle->setKmLlegada($this->getKmLlegada());
-       $detalle->setTanqueLlegada($this->getTanqueLlegada());
-       $detalle->setGasolinaGalonesCompradas($this->getGasolinaGalonesCompradas());
-       $detalle->setGasolinaPrecio($this->getGasolinaPrecio());
-       $detalle->setResponsable($this->getResponsable());
-       return $detalle;
-    }
-
-
-    private function buscarBitacoraActual(string $placa): Bitacora
-    {
-        $bitacora = Bitacora::query()
-            ->whereHas("vehiculo", function ($query) use ($placa) {
-                $query->where('placa', $placa);
-            })->first();
-
-        if(!$bitacora) $bitacora = new Bitacora();
-        $vehiculo = Vehiculo::query()
-            ->firstWhere('placa', $placa);
-        $mesActual = Carbon::now()->month;
-        $anioActual = Carbon::now()->year;
-        $bitacora->setMes($mesActual);
-        $bitacora->setAnio($anioActual);
-        $bitacora->setVehiculoId($vehiculo->id);
-        $bitacora->save();
-
-
-        return $bitacora;
-
+        $detalle = new DetalleBitacora();
+        $detalle->setDia($this->getDia());
+        $detalle->setUsuario($this->getUsuario());
+        $detalle->setObservaciones($this->getObservaciones());
+        $detalle->setHoraSalida($this->getHoraSalida());
+        $detalle->setKmSalida($this->getKmSalida());
+        $detalle->setTanqueSalida($this->getTanqueSalida());
+        $detalle->setHoraLlegada($this->getHoraLlegada());
+        $detalle->setKmLlegada($this->getKmLlegada());
+        $detalle->setTanqueLlegada($this->getTanqueLlegada());
+        $detalle->setGasolinaGalonesCompradas($this->getGasolinaGalonesCompradas());
+        $detalle->setGasolinaPrecio($this->getGasolinaPrecio());
+        $detalle->setResponsable($this->getResponsable());
+        return $detalle;
     }
 }

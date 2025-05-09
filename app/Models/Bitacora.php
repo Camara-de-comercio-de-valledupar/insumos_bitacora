@@ -19,6 +19,11 @@ final class Bitacora extends Model
         'vehiculo_id',
     ];
 
+    public $with = [
+        'detalles',
+        'vehiculo',
+    ];
+
     public function vehiculo()
     {
         return $this->belongsTo(Vehiculo::class, "vehiculo_id", "id");
@@ -31,7 +36,7 @@ final class Bitacora extends Model
 
     public function getAnio(): int
     {
-       return $this->anio;
+        return $this->anio;
     }
 
     public function getVehiculoId(): int
@@ -41,12 +46,12 @@ final class Bitacora extends Model
 
     public function setMes($mes): void
     {
-       $this->mes = $mes;
+        $this->mes = $mes;
     }
 
     public function setAnio($anio): void
     {
-        $this->anio= $anio;
+        $this->anio = $anio;
     }
 
     public function setVehiculoId($vehiculoId): void
@@ -59,4 +64,3 @@ final class Bitacora extends Model
         return $this->hasMany(DetalleBitacora::class);
     }
 }
-
