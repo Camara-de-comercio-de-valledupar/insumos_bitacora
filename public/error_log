@@ -404,3 +404,4 @@ Stack trace:
 #62 /home/ccvalledupar/public_html/bitacora/public/index.php(17): Illuminate\Foundation\Application->handleRequest(Object(Illuminate\Http\Request))
 #63 {main}
   thrown in /home/ccvalledupar/public_html/bitacora/vendor/laravel/framework/src/Illuminate/Foundation/Http/FormRequest.php on line 168
+[12-May-2025 11:47:04 America/Bogota] PHP Fatal error:  Constant expression contains invalid operations in /home/ccvalledupar/public_html/bitacora/app/Models/Bitacora.php on line 22

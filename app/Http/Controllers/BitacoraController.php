@@ -51,6 +51,9 @@ class BitacoraController extends Controller
 
     public function show(Bitacora $bitacora)
     {
+        $bitacora = Bitacora::with(['detalles' => function ($query) {
+            $query->orderBy('dia', 'desc');
+        }])->find($bitacora->id);
         return view('bitacora.show', compact('bitacora'));
     }
 

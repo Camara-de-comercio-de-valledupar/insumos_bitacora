@@ -156,6 +156,7 @@
                                         disabled>Seleccione una opción</option>
                                     <option value="Full" {{ old('tanque_llegada') == 'Full' ? 'selected' : '' }}>
                                         Lleno</option>
+                                    <option value="3/4" {{ old('tanque_llegada') == '3/4' ? 'selected' : '' }}>3/4
                                     <option value="1/2" {{ old('tanque_llegada') == '1/2' ? 'selected' : '' }}>1/2
                                     </option>
                                     <option value="1/4" {{ old('tanque_llegada') == '1/4' ? 'selected' : '' }}>1/4
@@ -183,7 +184,7 @@
                         <div class="col-12 col-md-6 p-1">
 
                             <div class="form-group">
-                                <label for="gasolina_precio">Precio por galon</label>
+                                <label for="gasolina_precio">Total gastado</label>
                                 <input value="{{ old('gasolina_precio') }}" min="0" step="0.01"
                                     type="number"
                                     class="form-control {{ $errors->has('gasolina_precio') ? 'is-invalid' : '' }}"
